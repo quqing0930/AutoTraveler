@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <!--Appium 服务关键字-->
+    <capability>
+        <appiumVersion>1.0</appiumVersion>
+        <autoLaunch>true</autoLaunch>
+        <noReset>false</noReset>
+        <language>zh-Hans</language>
+    </capability>
+    <androidCapability>
+        <app>/Users/mac/Desktop/apk/yizhangtong.apk</app>
+        <udid>eccb30368643</udid>
+        <platformName>Android</platformName>
+        <platformVersion>4.3</platformVersion>
+        <deviceName>Mi4</deviceName>
+        <appPackage>com.pingan.yzt</appPackage>
+        <appActivity>com.pingan.yzt.SplashActivityPro</appActivity>
+        <unicodeKeyboard>true</unicodeKeyboard>
+        <resetKeyboard>true</resetKeyboard>
+        <noSign>true</noSign>
+    </androidCapability>
+    <!--引导流 关键字驱动,引导至所需模块再开始遍历-->
+    <androidGuideFlow>
+        <!--滑动类型设置-->
+        <step>slide>>2</step>
+        <!--点击类型设置-->
+        <step>click>>id::com.pingan.yzt:id/btnnext</step>
+        <step>click>>id::com.pingan.yzt:id/rightBtn</step>
+        <step>click>>id::com.pingan.yzt:id/text_home_head_login</step>
+        <!--输入类型设置-->
+        <!--<step>input>>id::com.pingan.yzt:id/otp_et_input|15618971003</step>-->
+        <!--<step>click>>id::com.pingan.yzt:id/otp_btn_green</step>-->
+        <!--<step>input>>id::com.pingan.yzt:id/login_with_data_password|qwer2015</step>-->
+        <!--<step>click>>id::com.pingan.yzt:id/confirm_btn</step>-->
+        <!--<step>input>>id::com.pingan.yzt:id/et_input|8888</step>-->
+        <!--<step>click>>id::com.pingan.yzt:id/tv_ok</step>-->
+        <step>click>>id::com.pingan.yzt:id/otp_tv_login_with_username</step>
+        <step>input>>id::com.pingan.yzt:id/tv_loginAccount|15618971003</step>
+        <step>input>>id::com.pingan.yzt:id/loginPassword|qwer2015</step>
+        <step>click>>id::com.pingan.yzt:id/tv_login</step>
+        <step>input>>id::com.pingan.yzt:id/et_input|8888</step>
+        <step>click>>id::com.pingan.yzt:id/tv_ok</step>
+        <step>
+            <!--手势密码-->
+            gesture>>xpath:://android.widget.FrameLayout[@resource-id='com.pingan.yzt:id/gesture_container']//android.view.View[1]//android.widget.ImageView
+        </step>
+    </androidGuideFlow>
+    <rule>
+        <!--窗口鉴定策略,默认取前8个节点生成md5-->
+        <identify-default>8</identify-default>
+        <!--Tab窗口用selected区别,可能要多选几个节点到达-->
+        <identify-special>
+            <define>专题,直播,要闻,选股>>24</define>
+            <define>简单理财,投资,保险,贷款,信用卡>>30</define>
+        </identify-special>
+        <!--窗口执行顺序 1:从上到下(默认) 2:从下到上-->
+        <reverse>1</reverse>
+        <!--控件白名单-->
+        <click>
+            <class>UIAImage</class>
+            <class>UIAButton</class>
+            <class>UIASwitch</class>
+            <class>UIATableCell</class>
+            <class>UIAStaticText</class>
+            <class>UIAPickerWheel</class>
+            <class>UIACollectionCell</class>
+            <class>android.widget.Button</class>
+            <class>android.widget.ImageButton</class>
+            <class>android.widget.TextView</class>
+            <class>android.widget.ImageView</class>
+            <class>android.widget.FrameLayout</class>
+            <class>android.widget.LinearLayout</class>
+        </click>
+        <input>
+            <class>UIATextField</class>
+            <class>UIASearchBar</class>
+            <class>UIASecureTextField</class>
+            <class>android.widget.EditText</class>
+        </input>
+        <!--启动界面提示框,包含的关键字及操作的控件-->
+        <tips>禁止|允许>>//android.widget.Button[@resource-id='com.huawei.systemmanager:id/btn_allow']</tips>
+        <!--无需返回的列表,需配置识别窗口唯一性的内容-->
+        <notback>
+            <item>首页,金融旗舰店,财经快讯,我,我的资产,财富加速,财富排名,健康,房产</item>
+            <item>首页,金融旗舰店,财经快讯,我,我的订单,活期,定期</item>
+            <item>首页,金融旗舰店,财经快讯,我,直播,要闻,专题,选股</item>
+            <item>首页,金融旗舰店,财经快讯,我,账户余额,银行卡,订单中心,我的信用</item>
+        </notback>
+        <!--黑名单 支持text,name,resourceId的过滤-->
+        <blackList>
+            <item>相机</item>
+            <item>平安行</item>
+            <item>天天赢</item>
+            <item>添加平安信用卡</item>
+            <item>退出登录</item>
+            <item>如您已完成添加，请重新登录</item>
+            <item>重新登录</item>
+            <item>com.pingan.yzt:id/item_security</item>
+            <item>com.pingan.yzt:id/ll_pingan_run</item>
+            <item>com.pingan.yzt:id/iv_title_back_button</item>
+            <item>com.pingan.yzt:id/security_msg_layout</item>
+            <item>com.pingan.yzt:id/security_msg_layout</item>
+            <item>com.pingan.yzt:id/rl_ewallet_credit_manage</item>
+            <item>com.pingan.yzt:id/security_open_account_layout</item>
+            <item>//UIAApplication[1]/UIAWindow[4]/UIAPicker[1]/UIAPickerWheel[1]</item>
+            <item>
+                //UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIACollectionView[1]/UIACollectionCell[5]
+            </item>
+        </blackList>
+        <!--触发器 条件>>动作 支持返回,点击,手势密码解锁,延时等待-->
+        <trigger>
+            <item>拍照>>back</item>
+            <item>相册>>back</item>
+            <item>扫描框>>back</item>
+            <item>分享到>>back</item>
+            <item>我的权益>>delay->3</item>
+            <item>进入平安行>>back</item>
+            <item>选择银行>>back</item>
+            <item>选择保险公司>>back</item>
+            <item>检测到新版本>>back</item>
+            <item>应急钱包|立即开通>>back</item>
+            <item>添加产品|保存>>back</item>
+            <item>消息|全部>>back</item>
+            <item>保险|总保额>>back</item>
+            <item>
+                closeButton>>//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ImageButton
+            </item>
+            <item>安全验证|立即验证|以后再说>>//android.widget.Button[@resource-id='com.pingan.yzt:id/rightBtn']</item>
+            <item>请选择日期|确定>>//android.widget.TextView[@resource-id='com.pingan.yzt:id/ok']</item>
+            <item>
+                更多解锁方式>>gesture->//android.widget.FrameLayout[@resource-id='com.pingan.yzt:id/gesture_container']//android.view.View[1]//android.widget.ImageView
+            </item>
+        </trigger>
+        <!--过滤级别 1:clazz+text+content_desc+resourceId 2:winID+clazz+text+content_desc+resourceId 3:taskID-->
+        <filter>2</filter>
+        <!--退出遍历的条件:同一窗口内的停留次数-->
+        <allowSameWinTimes>10</allowSameWinTimes>
+    </rule>
+    <!--app日志-->
+    <log>
+        <android>adb -s #udid# logcat -b main -b system -b events -b radio *:D | grep pingan</android>
+    </log>
+    <global>
+        <!--Appium port-->
+        <port>5757</port>
+        <!--Appium host-->
+        <host>127.0.0.1</host>
+        <!--测试类型 1.android 2.ios 3.web-->
+        <mode>1</mode>
+        <!--遍历深度-->
+        <depth>3</depth>
+        <!--截图和视频的目录-->
+        <screenshot>/Users/mac/Desktop/png</screenshot>
+        <!--遍历时间 分-->
+        <duration>3</duration>
+        <!--延时等待 秒-->
+        <interval>3</interval>
+        <!--超时 秒-->
+        <timeout>30</timeout>
+    </global>
+</config>
