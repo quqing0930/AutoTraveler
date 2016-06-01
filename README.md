@@ -63,6 +63,10 @@ export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$APPIUM_HOM
 
 注意：环境变量的具体路径以实际路径为主
 
+### 安装idevices套件
+brew install libimobiledevice
+源码地址 <https://github.com/benvium/libimobiledevice-macosx>
+
 ### AutoTraveler配置说明
 详情参考默认配置文件里面的注释，有详细说明
 
