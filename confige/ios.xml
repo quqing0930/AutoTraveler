@@ -8,9 +8,9 @@
         <language>zh-Hans</language>
     </capability>
     <iosCapability>
-        <app>/Users/mac/Desktop/apk/PANewToapAPP.app</app>
-        <udid>d32975a39224bc409796bcdc75956cd6530edbdb</udid>
-        <bundleId>com.pingan.yizhangtong</bundleId>
+        <app>/Users/mac/Desktop/apk/xxxxxx.app</app>
+        <udid>xxxxxxxx</udid>
+        <bundleId>com.xxx.xxxxxx</bundleId>
         <platformName>iOS</platformName>
         <platformVersion>8.2</platformVersion>
         <deviceName>iPhone 5</deviceName>
@@ -24,16 +24,10 @@
         <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIAButton[1]</step>
         <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAButton[3]</step>
         <!--输入类型设置-->
-        <!--<step>input>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATextField[1]|15618971003</step>-->
-        <!--<step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIAButton[1]</step>-->
-        <!--<step>input>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIASecureTextField[1]|qwer2015</step>-->
-        <!--<step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIAButton[1]</step>-->
         <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIAButton[2]</step>
         <step>input>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATextField[1]|15618971003</step>
         <step>input>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIASecureTextField[1]|qwer2015</step>
         <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIAButton[1]</step>
-        <!--<step>input>>xpath:://UIAApplication[1]/UIAWindow[3]/UIATextField[1]|8888</step>-->
-        <!--<step>click>>xpath:://UIAApplication[1]/UIAWindow[3]/UIAButton[2]</step>-->
         <!--手势密码设置-->
         <step>gesture>>xpath:://UIAButton[@name='blue circle']</step>
     </iosGuideFlow>
@@ -42,8 +36,8 @@
         <identify-default>5</identify-default>
         <!--Tab窗口用selected区别,可能要多选几个节点到达-->
         <identify-special>
-            <define>专题,直播,要闻,选股>>16</define>
-            <define>简单理财,投资,保险,贷款,信用卡>>13</define>
+            <define>专题,xx,xx,xx>>16</define>
+            <define>xx,xx,保险,xx,xx>>13</define>
         </identify-special>
         <!--窗口执行顺序 1:从上到下(默认) 2:从下到上-->
         <reverse>1</reverse>
@@ -53,7 +47,6 @@
             <class>UIAButton</class>
             <class>UIASwitch</class>
             <class>UIATableCell</class>
-            <!--<class>UIAStaticText</class>-->
             <class>UIAPickerWheel</class>
             <class>UIACollectionCell</class>
         </click>
@@ -66,21 +59,10 @@
         <back>
             <location>//UIAApplication[1]/UIAWindow[4]/UIAButton[1]</location>
             <location>//UIAApplication[1]/UIAWindow[1]/UIANavigationBar[1]/UIAButton[2]</location>
-            <location>//UIAApplication[1]/UIAWindow[3]/UIAButton[1]</location>
-            <location>//UIAApplication[1]/UIAWindow[4]/UIAButton[2]</location>
-            <location>//UIAApplication[1]/UIAWindow[2]/UIAToolbar[1]/UIAButton[3]</location>
-            <location>//UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIAWebView[1]/UIAImage[1]</location>
-            <location>//UIAApplication[1]/UIAWindow[1]/UIAButton[2]</location>
-            <location>//UIAApplication[1]/UIAWindow[1]/UIAButton[1]</location>
-            <location>//UIAApplication[1]/UIAWindow[3]/UIAButton[1]</location>
-            <location>//UIAApplication[1]/UIAWindow[3]/UIAButton[2]</location>
         </back>
         <!--无需返回的列表,需配置识别窗口唯一性的内容-->
         <notback>
-            <item>首页,金融旗舰店,财经快讯,我,我的资产,财富加速,财富排名,健康,房产</item>
-            <item>首页,金融旗舰店,财经快讯,我,我的订单,活期,定期</item>
-            <item>首页,金融旗舰店,财经快讯,我,直播,要闻,专题,选股</item>
-            <item>首页,金融旗舰店,财经快讯,我,账户余额,银行卡,订单中心,我的信用</item>
+            <item>首页,xxx,xxx,xxx,aa,bb</item>
         </notback>
         <!--黑名单 支持text,name,resourceId-->
         <blackList>
@@ -90,49 +72,19 @@
             <item>shift</item>
             <item>Dictate</item>
             <item>DONE</item>
-            <item>键盘</item>
-            <item>平安行</item>
-            <item>天天赢</item>
-            <item>交易密码</item>
             <item>退出登录</item>
-            <item>拍摄名片</item>
-            <item>credit card camera</item>
-            <item>添加平安信用卡</item>
             <item>如您已完成添加，请重新登录</item>
             <item>重新登录</item>
             <item>//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAButton[1]</item>
             <item>//UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATableView[1]/UIATableCell[1]/UIAButton[1]</item>
-            <item>//UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATableView[1]/UIATableCell[1]/UIAButton[2]</item>
-            <item>//UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATableView[1]/UIATableCell[1]/UIAButton[3]</item>
-            <item>//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAButton[1]</item>
-            <item>//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIAButton[1]</item>
-            <item>//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIAButton[2]</item>
-            <item>//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIAButton[3]</item>
-            <item>
-                //UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIACollectionView[1]/UIACollectionCell[5]
-            </item>
         </blackList>
         <!--触发器 条件>>动作 支持返回,点击,手势密码解锁,延时等待-->
         <trigger>
-            <item>分享到>>back</item>
-            <item>车辆品牌>>back</item>
-            <item>添加房产|开始评估>>back</item>
-            <item>社保计算|账户自动同步>>back</item>
-            <item>我的权益>>delay->8</item>
-            <item>进入平安行>>back</item>
             <item>选择银行>>back</item>
             <item>选择保险公司>>back</item>
             <item>检测到新版本>>back</item>
-            <item>取消|确定|添加车辆>>back</item>
-            <item>温馨提示|确定>>//UIAApplication[1]/UIAWindow[4]/UIAButton[1]</item>
-            <item>温馨提示|立即开通|取消>>//UIAApplication[1]/UIAWindow[4]/UIAButton[1]</item>
-            <item>温馨提示|贷款期数不能为空>>//UIAApplication[1]/UIAWindow[4]/UIAButton[1]</item>
-            <item>温馨提示|确定|取消>>//UIAApplication[1]/UIAWindow[4]/UIAButton[1]</item>
-            <item>提示|确定|取消>>//UIAApplication[1]/UIAWindow[4]/UIAButton[1]</item>
-            <item>安全验证|立即验证|以后再说>>//UIAApplication[1]/UIAWindow[4]/UIAButton[1]</item>
-            <item>closeButton>>//UIAApplication[1]/UIAWindow[1]/UIAButton[1]</item>
-            <item>安全验证|立即验证|以后再说>>//UIAApplication[1]/UIAWindow[4]/UIAButton[1]</item>
-            <item>更多解锁方式>>gesture->//UIAButton[@name='blue circle']</item>
+            <item>确定|取消>>//UIAApplication[1]/UIAWindow[1]/UIAButton[3]</item>
+            <item>更多解锁方式>>gesture->//UIAButton[@name='xxx xxx']</item>
         </trigger>
         <!--1:clazz+name+label+value+path 2:clazz+name+label+value+path 3:taskID-->
         <filter>1</filter>
@@ -140,7 +92,7 @@
         <allowSameWinTimes>10</allowSameWinTimes>
     </rule>
     <log>
-        <ios>idevicesyslog -d -u #udid#|grep PANewToapAPP</ios>
+        <ios>idevicesyslog -d -u #udid#|grep xxxxxx</ios>
     </log>
     <global>
         <!--Appium port-->
