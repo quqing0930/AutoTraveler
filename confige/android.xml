@@ -29,8 +29,8 @@
         <step>click>>id::com.xxx.xxx:id/text_home_head_login</step>
         <!--输入类型设置-->
         <step>click>>id::com.xxx.xxx:id/otp_tv_login_with_username</step>
-        <step>input>>id::com.xxx.xxx:id/tv_loginAccount|15618971003</step>
-        <step>input>>id::com.xxx.xxx:id/loginPassword|qwer2015</step>
+        <step>input>>id::com.xxx.xxx:id/tv_loginAccount|13012345678</step>
+        <step>input>>id::com.xxx.xxx:id/loginPassword|123456</step>
         <step>click>>id::com.xxx.xxx:id/tv_login</step>
         <step>input>>id::com.xxx.xxx:id/et_input|8888</step>
         <step>click>>id::com.xxx.xxx:id/tv_ok</step>
@@ -44,8 +44,8 @@
         <identify-default>8</identify-default>
         <!--Tab窗口用selected区别,可能要多选几个节点到达-->
         <identify-special>
-            <define>专题,直播,要闻,选股>>24</define>
-            <define>简单理财,投资,保险,贷款,信用卡>>30</define>
+            <define>专题,xx,xx,xx>>24</define>
+            <define>xx,xx,保险,xx,xx>>30</define>
         </identify-special>
         <!--窗口执行顺序 1:从上到下(默认) 2:从下到上-->
         <reverse>1</reverse>
@@ -95,8 +95,8 @@
             <item>扫描框>>back</item>
             <item>分享到>>back</item>
             <item>检测到新版本>>back</item>
-            <item>消息|全部>>back</item>
-            <item>保险|总保额>>back</item>
+            <item>xx|全部>>back</item>
+            <item>保险|xx>>back</item>
             <item>
                 更多解锁方式>>gesture->//android.widget.FrameLayout[@resource-id='com.xxx.xxx:id/gesture_container']//android.view.View[1]//android.widget.ImageView
             </item>
