@@ -14,7 +14,7 @@
         <platformVersion>4.3</platformVersion>
         <deviceName>Mi4</deviceName>
         <appPackage>xxx.xxx.xxx</appPackage>
-        <appActivity>xxx.xxx.xxx.SplashActivityPro</appActivity>
+        <appActivity>xxx.xxx.xxx.ActivityPro</appActivity>
         <unicodeKeyboard>true</unicodeKeyboard>
         <resetKeyboard>true</resetKeyboard>
         <noSign>true</noSign>
@@ -81,11 +81,10 @@
         <blackList>
             <item>相机</item>
             <item>退出登录</item>
-            <item>如您已完成添加，请重新登录</item>
             <item>重新登录</item>
-            <item>//UIAApplication[1]/UIAWindow[4]/UIAPicker[1]/UIAPickerWheel[1]</item>
+            <item>//UIAApplication[1]/UIAWindow[1]/UIAPicker[1]/UIAPickerWheel[1]</item>
             <item>
-                //UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIACollectionView[1]/UIACollectionCell[5]
+                //UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIACollectionView[1]/UIACollectionCell[3]
             </item>
         </blackList>
         <!--触发器 条件>>动作 支持返回,点击,手势密码解锁,延时等待-->
