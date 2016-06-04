@@ -22,7 +22,7 @@
         <step>slide>>2</step>
         <!--点击类型设置-->
         <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIAButton[1]</step>
-        <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAButton[3]</step>
+        <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAButton[2]</step>
         <!--输入类型设置-->
         <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIAButton[2]</step>
         <step>input>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATextField[1]|13012345678</step>
@@ -57,7 +57,7 @@
         </input>
         <!--返回键-->
         <back>
-            <location>//UIAApplication[1]/UIAWindow[4]/UIAButton[1]</location>
+            <location>//UIAApplication[1]/UIAWindow[2]/UIAButton[1]</location>
             <location>//UIAApplication[1]/UIAWindow[1]/UIANavigationBar[1]/UIAButton[2]</location>
         </back>
         <!--无需返回的列表,需配置识别窗口唯一性的内容-->
@@ -80,7 +80,7 @@
             <item>选择银行>>back</item>
             <item>选择公司>>back</item>
             <item>检测到新版本>>back</item>
-            <item>确定|取消>>//UIAApplication[1]/UIAWindow[1]/UIAButton[3]</item>
+            <item>确定|取消>>//UIAApplication[1]/UIAWindow[1]/UIAButton[2]</item>
             <item>更多解锁方式>>gesture->//UIAButton[@name='xxx xxx']</item>
         </trigger>
         <!--1:clazz+name+label+value+path 2:clazz+name+label+value+path 3:taskID-->
