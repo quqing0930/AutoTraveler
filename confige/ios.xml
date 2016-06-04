@@ -25,8 +25,8 @@
         <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAButton[3]</step>
         <!--输入类型设置-->
         <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIAButton[2]</step>
-        <step>input>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATextField[1]|15618971003</step>
-        <step>input>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIASecureTextField[1]|qwer2015</step>
+        <step>input>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATextField[1]|13012345678</step>
+        <step>input>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIASecureTextField[1]|123456</step>
         <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIAButton[1]</step>
         <!--手势密码设置-->
         <step>gesture>>xpath:://UIAButton[@name='blue circle']</step>
@@ -70,10 +70,7 @@
             <item>相册</item>
             <item>照片</item>
             <item>shift</item>
-            <item>Dictate</item>
-            <item>DONE</item>
             <item>退出登录</item>
-            <item>如您已完成添加，请重新登录</item>
             <item>重新登录</item>
             <item>//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAButton[1]</item>
             <item>//UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATableView[1]/UIATableCell[1]/UIAButton[1]</item>
@@ -81,7 +78,7 @@
         <!--触发器 条件>>动作 支持返回,点击,手势密码解锁,延时等待-->
         <trigger>
             <item>选择银行>>back</item>
-            <item>选择保险公司>>back</item>
+            <item>选择公司>>back</item>
             <item>检测到新版本>>back</item>
             <item>确定|取消>>//UIAApplication[1]/UIAWindow[1]/UIAButton[3]</item>
             <item>更多解锁方式>>gesture->//UIAButton[@name='xxx xxx']</item>
