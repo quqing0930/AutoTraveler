@@ -4,22 +4,19 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
-import org.openqa.selenium.By;
+import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import pers.traveler.constant.Action;
 import pers.traveler.constant.Type;
 import pers.traveler.entity.Config;
 import pers.traveler.entity.UiNode;
 import pers.traveler.log.Log;
+import pers.traveler.parser.ConfigProvider;
 import pers.traveler.parser.XmlParser;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -393,62 +390,182 @@ public abstract class Engine {
         String inputContent;
 
         try {
-            acceptAlert(config.getTips());
-            for (String guide : guideFlow) {
-                actionType = guide.split(">>")[0];
-                if (actionType.equals(Action.SLIDE)) {
-                    int times;
-                    times = Integer.parseInt(guide.split(">>")[1]);
-                    swipeRightToLeft(times);
-                } else {
-                    locationType = guide.split(">>")[1].split("::")[0];
-                    if (actionType.equalsIgnoreCase(pers.traveler.constant.Action.CLICK)) {
-                        location = guide.split(">>")[1].split("::")[1];
-                        Log.logInfo(Action.CLICK + " -> " + location);
-                        if (locationType.equalsIgnoreCase(Action.ID)) {
-                            driver.findElement(By.id(location)).click();
-                        } else if (locationType.equalsIgnoreCase(Action.NAME)) {
-                            driver.findElement(By.name(location)).click();
-                        } else if (locationType.equalsIgnoreCase(Action.XPATH)) {
-                            driver.findElement(By.xpath(location)).click();
+//            acceptAlert(config.getTips());
+            for (int i = 0; i < guideFlow.size(); i++) {
+                try {
+                    actionType = guideFlow.get(i).split(">>")[0];
+                    if (actionType.equalsIgnoreCase(Action.SLIDE)) {
+                        int times;
+                        times = Integer.parseInt(guideFlow.get(i).split(">>")[1]);
+                        swipeRightToLeft(times);
+                    } else if (actionType.equalsIgnoreCase(Action.TIPS)) {
+                        String str = guideFlow.get(i);
+                        int index = str.indexOf(">>") + 2;
+                        acceptAlert(str.substring(index));
+                    } else if (actionType.equalsIgnoreCase(Action.TAP)) {
+                        tapByCoordinate(guideFlow.get(i));
+                    } else if (actionType.equalsIgnoreCase(Action.SCROLL_TO)) {
+                        Log.logInfo("scroll to [" + guideFlow.get(i).split(">>")[1] + "]");
+                        ((AppiumDriver) driver).scrollTo(guideFlow.get(i).split(">>")[1]);
+                    } else if (actionType.equalsIgnoreCase(Action.SCROLL_TO_EXACT)) {
+                        Log.logInfo("scroll to exact [" + guideFlow.get(i).split(">>")[1] + "]");
+                        ((AppiumDriver) driver).scrollToExact(guideFlow.get(i).split(">>")[1]);
+                    } else if (actionType.equalsIgnoreCase(Action.WAIT)) {
+                        Log.logInfo("wait for [" + guideFlow.get(i).split(">>")[1] + "]");
+                        TimeUnit.SECONDS.sleep(Long.parseLong(guideFlow.get(i).split(">>")[1]));
+                    } else if (actionType.equalsIgnoreCase(Action.RE_LOGIN)) {
+                        Log.logInfo("do re-login");
+                        ((AppiumDriver) driver).resetApp();
+                    } else if (actionType.equalsIgnoreCase(Action.INCLUDE)) {
+                        Log.logInfo("execute module >> " + guideFlow.get(i).split(">>")[1]);
+                        guideRuleProcessing(new ConfigProvider().getModule(guideFlow.get(i).split(">>")[1]), interval);
+                    } else {
+                        locationType = guideFlow.get(i).split(">>")[1].split("::")[0];
+                        if (actionType.equalsIgnoreCase(pers.traveler.constant.Action.CLICK)) {
+                            location = guideFlow.get(i).split(">>")[1].split("::")[1];
+                            Log.logInfo(Action.CLICK + " -> " + location);
+                            if (locationType.equalsIgnoreCase(Action.ID)) {
+                                driver.findElement(By.id(location)).click();
+                            } else if (locationType.equalsIgnoreCase(Action.NAME)) {
+                                driver.findElement(By.name(location)).click();
+                            } else if (locationType.equalsIgnoreCase(Action.XPATH)) {
+                                driver.findElement(By.xpath(location)).click();
+                            }
+                        } else if (actionType.equalsIgnoreCase(Action.INPUT)) {
+                            location = guideFlow.get(i).split(">>")[1].split("::")[1].split("\\|")[0];
+                            inputContent = guideFlow.get(i).split("\\|")[1];
+                            Log.logInfo(Action.INPUT + " -> " + location + ", sendKeys -> " + inputContent);
+                            if (locationType.equalsIgnoreCase(Action.ID)) {
+                                driver.findElement(By.id(location)).click();
+                                driver.findElement(By.id(location)).sendKeys(inputContent);
+                            } else if (locationType.equalsIgnoreCase(Action.NAME)) {
+                                driver.findElement(By.name(location)).click();
+                                driver.findElement(By.name(location)).sendKeys(inputContent);
+                            } else if (locationType.equalsIgnoreCase(Action.XPATH)) {
+                                driver.findElement(By.xpath(location)).click();
+                                driver.findElement(By.xpath(location)).sendKeys(inputContent);
+                            }
+                        } else if (actionType.equalsIgnoreCase(Action.GESTURE)) {
+                            List<WebElement> gestureContainer;
+                            location = guideFlow.get(i).split(">>")[1].split("::")[1];
+                            Log.logInfo(Action.GESTURE + " -> " + location);
+                            gestureContainer = getGesturepwdWebElements(location, new int[]{1, 2, 3, 6, 5, 4, 7, 8, 9});
+                            GesturePWD(gestureContainer);
+                        } else if (actionType.equalsIgnoreCase(Action.ASSERT)) {
+                            String[] strings;
+                            String pageSource = driver.getPageSource();
+//                        location = guideFlow.get(i).split(">>")[1].split("::")[1].split("\\|")[0];
+                            inputContent = guideFlow.get(i).split("\\|")[1];
+                            if (inputContent.indexOf(",") == -1) {
+                                strings = new String[]{inputContent};
+                            } else {
+                                strings = inputContent.split(",");
+                            }
+                            Assert.assertTrue(isContain(pageSource, strings));
                         }
-                    } else if (actionType.equalsIgnoreCase(Action.INPUT)) {
-                        location = guide.split(">>")[1].split("::")[1].split("\\|")[0];
-                        inputContent = guide.split("\\|")[1];
-                        Log.logInfo(Action.INPUT + " -> " + location + ", sendKeys -> " + inputContent);
-                        if (locationType.equalsIgnoreCase(Action.ID)) {
-                            driver.findElement(By.id(location)).click();
-                            driver.findElement(By.id(location)).sendKeys(inputContent);
-                        } else if (locationType.equalsIgnoreCase(Action.NAME)) {
-                            driver.findElement(By.name(location)).click();
-                            driver.findElement(By.name(location)).sendKeys(inputContent);
-                        } else if (locationType.equalsIgnoreCase(Action.XPATH)) {
-                            driver.findElement(By.xpath(location)).click();
-                            driver.findElement(By.xpath(location)).sendKeys(inputContent);
-                        }
-                    } else if (actionType.equalsIgnoreCase(Action.GESTURE)) {
-                        List<WebElement> gestureContainer = null;
-                        location = guide.split(">>")[1].split("::")[1];
-                        Log.logInfo(Action.GESTURE + " -> " + location);
-                        gestureContainer = getGesturepwdWebElements(location, new int[]{1, 2, 3, 6, 5, 4, 7, 8, 9});
-                        GesturePWD(gestureContainer);
-                        GesturePWD(gestureContainer);
+                        screenShot();
                     }
-
-                    screenShot();
+                    TimeUnit.SECONDS.sleep(interval);
+                } catch (InterruptedException e) {
+                    Log.logError(e.fillInStackTrace());
+                } catch (NoSuchElementException e) {
+                    Log.logError(e.fillInStackTrace());
+                    continue;
+                } catch (AssertionError e) {
+                    Log.logError(e.fillInStackTrace());
+                    continue;
                 }
-                TimeUnit.SECONDS.sleep(interval);
             }
             TimeUnit.SECONDS.sleep(interval);
             return driver.getPageSource();
         } catch (InterruptedException e) {
             Log.logError(e.fillInStackTrace());
-        } catch (NoSuchElementException e) {
-            Log.logError(e.fillInStackTrace());
         } catch (IOException e) {
             Log.logError(e.fillInStackTrace());
         }
         return null;
+    }
+
+    private boolean isContain(String source, String[] strings) {
+        for (String str : strings) {
+            if (!source.contains(str)) {
+                Log.logError("failure, page not contains -> " + str);
+                return false;
+            }
+        }
+        Log.logInfo("success, page contains -> " + Arrays.asList(strings));
+        return true;
+    }
+
+    private void tapByCoordinate(String stepConfig) {
+        String tempCoordinate;
+        int width = driver.manage().window().getSize().width;
+        int height = driver.manage().window().getSize().height;
+        tempCoordinate = Double.toString(width * Double.parseDouble(stepConfig.split(">>")[1].split(",")[0].split(":")[1]));
+        tempCoordinate = formatCoordinate(tempCoordinate);
+        int x = Integer.parseInt(tempCoordinate);
+        tempCoordinate = Double.toString(height * Double.parseDouble(stepConfig.split(">>")[1].split(",")[1].split(":")[1]));
+        tempCoordinate = formatCoordinate(tempCoordinate);
+        int y = Integer.parseInt(tempCoordinate);
+        int fingers = Integer.parseInt(stepConfig.split(">>")[1].split(",")[2].split(":")[1]);
+        int touchCount = Integer.parseInt(stepConfig.split(">>")[1].split(",")[3].split(":")[1]);
+        int duration = Integer.parseInt(stepConfig.split(">>")[1].split(",")[4].split(":")[1]);
+        Log.logInfo("width=" + width + ", height=" + height);
+        for (int i = 0; i < touchCount; i++) {
+            Log.logInfo("轻触屏幕 -> x=" + x + ", y=" + y + ",fingers=" + fingers + ",touchCount=" + touchCount + ", duration=" + duration);
+            ((AppiumDriver) driver).tap(fingers, x, y, duration);
+        }
+    }
+
+    private String formatCoordinate(String coordinate) {
+        if (coordinate.indexOf(".") != -1) {
+            coordinate = coordinate.substring(0, coordinate.indexOf("."));
+        }
+        return coordinate;
+    }
+
+    /**
+     * 模拟轻触操作。
+     *
+     * @param width      x坐标.
+     * @param height     y坐标.
+     * @param tapCount   轻触手指数.
+     * @param touchCount 轻触次数.
+     * @param duration   持续时间
+     */
+    public void tapByCoordinate(double width, double height, double tapCount, double touchCount, double duration) {
+        Map tap = new HashMap();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        tap.put("tapCount", tapCount);
+        tap.put("touchCount", touchCount);
+        tap.put("duration", duration);
+        tap.put("x", width);
+        tap.put("y", height);
+        js.executeScript("mobile: tap", tap);
+    }
+
+    /**
+     * swipe down
+     *
+     * @param during wait for page loading
+     * @author quqing
+     */
+    public void swipeToDown(int during, int startXDenominator, int startYDenominator, int endXDenominator, int endYDenominator) {
+        int width = driver.manage().window().getSize().width;
+        int height = driver.manage().window().getSize().height;
+        ((AppiumDriver) driver).swipe(width / startXDenominator, height / startYDenominator, width / endXDenominator, height / endYDenominator, during);
+    }
+
+    /**
+     * swipe up
+     *
+     * @param during wait for page loading
+     * @author quqing
+     */
+    public void swipeToUp(int during) {
+        int width = driver.manage().window().getSize().width;
+        int height = driver.manage().window().getSize().height;
+        ((AppiumDriver) driver).swipe(width / 2, height * 3 / 4, width / 2, height / 6, during);
     }
 
     /**
@@ -508,7 +625,7 @@ public abstract class Engine {
                 driver.findElement(By.xpath(tips.split(">>")[1])).click();
             }
         }
-        TimeUnit.SECONDS.sleep(config.getInterval());
+//        TimeUnit.SECONDS.sleep(config.getInterval());
     }
 
     /**
@@ -531,7 +648,7 @@ public abstract class Engine {
 
     protected List<WebElement> getGesturepwdWebElements(String location, int[] password) {
         List<WebElement> webElements = new ArrayList<WebElement>();
-        List<WebElement> GestureContainer = null;
+        List<WebElement> GestureContainer;
         GestureContainer = driver.findElements(By.xpath(location));
         for (int i = 0; i < password.length; i++) {
             if (password[i] == 1) {
@@ -656,49 +773,6 @@ public abstract class Engine {
         }
     }
 
-//    /**
-//     * 新任务栈按过滤级别过滤
-//     *
-//     * @param newStack
-//     * @param taskStack
-//     * @return
-//     */
-//    protected Stack<UiNode> filterAgain(Stack<UiNode> taskStack, Stack<UiNode> newStack) {
-//        String thisInfo, thatInfo;
-//        List<UiNode> removeList = new ArrayList<>();
-//        int filter = config.getFilter();
-//        if (filter != 4) {
-//            for (int i = 0; i < newStack.size(); i++) {
-//                thisInfo = newStack.get(i).getInfo();
-//                if (filter == 1) {
-//                    thisInfo = thisInfo.split(",")[0] + thisInfo.split(",")[1];
-//                } else if (filter == 2) {
-//                    thisInfo = thisInfo.split(",")[0] + thisInfo.split(",")[1] + thisInfo.split(",")[2];
-//                } else if (filter == 3) {
-//                    thisInfo = thisInfo.split(",")[0] + thisInfo.split(",")[1] + thisInfo.split(",")[2] + thisInfo.split(",")[3];
-//                }
-//                for (int j = 0; j < taskStack.size(); j++) {
-//                    thatInfo = taskStack.get(j).getInfo();
-//                    if (filter == 1) {
-//                        thatInfo = thatInfo.split(",")[0] + thatInfo.split(",")[1];
-//                    } else if (filter == 2) {
-//                        thatInfo = thatInfo.split(",")[0] + thatInfo.split(",")[1] + thatInfo.split(",")[2];
-//                    } else if (filter == 3) {
-//                        thatInfo = thatInfo.split(",")[0] + thatInfo.split(",")[1] + thatInfo.split(",")[2] + thatInfo.split(",")[3];
-//                    }
-//
-//                    if (thisInfo == thatInfo) {
-//                        removeList.add(newStack.get(i));
-//                    }
-//                }
-//            }
-//            newStack.removeAll(removeList);
-//            return newStack;
-//        } else {
-//            return newStack;
-//        }
-//    }
-
     /**
      * 判断是否存在同窗口的节点
      *
@@ -804,20 +878,28 @@ public abstract class Engine {
                 }
                 if (needTrigger(pageSource, keyList)) {
                     try {
-                        if (action.equalsIgnoreCase(Action.BACK) && type.equalsIgnoreCase(Action.BACK)) {
-                            doBackNoTrigger();
-                            return true;
-                        } else if (action.indexOf("->") != -1 && action.split("->")[0].equalsIgnoreCase(Action.GESTURE) && type.equalsIgnoreCase(Action.GESTURE)) {
-                            action = action.split("->")[1];
-                            GesturePWD(getGesturepwdWebElements(action, new int[]{1, 2, 3, 6, 5, 4, 7, 8, 9}));
-                            return true;
-                        } else if (action.indexOf("->") != -1 && action.split("->")[0].equalsIgnoreCase(Action.DELAY) && type.equalsIgnoreCase(Action.DELAY)) {
-                            action = action.split("->")[1];
-                            TimeUnit.SECONDS.sleep(Long.parseLong(action));
-                            return true;
-                        } else if (action.indexOf("->") == -1 && !action.equalsIgnoreCase(Action.BACK) && type.equalsIgnoreCase(Action.CLICK)) {
-                            driver.findElement(By.xpath(action)).click();
-                            return true;
+                        if (action.equalsIgnoreCase(Action.BACK)) {
+                            if (type.equalsIgnoreCase(Action.BACK)) {
+                                doBackNoTrigger();
+                                return true;
+                            }
+                        } else if (action.indexOf("->") != -1 && action.split("->")[0].equalsIgnoreCase(Action.GESTURE)) {
+                            if (type.equalsIgnoreCase(Action.GESTURE)) {
+                                action = action.split("->")[1];
+                                GesturePWD(getGesturepwdWebElements(action, new int[]{1, 2, 3, 6, 5, 4, 7, 8, 9}));
+                                return true;
+                            }
+                        } else if (action.indexOf("->") != -1 && action.split("->")[0].equalsIgnoreCase(Action.DELAY)) {
+                            if (type.equalsIgnoreCase(Action.DELAY)) {
+                                action = action.split("->")[1];
+                                TimeUnit.SECONDS.sleep(Long.parseLong(action));
+                                return true;
+                            }
+                        } else {
+                            if (type.equalsIgnoreCase(Action.CLICK)) {
+                                driver.findElement(By.xpath(action)).click();
+                                return true;
+                            }
                         }
                     } catch (NoSuchElementException e) {
                         Log.logError(e.fillInStackTrace());

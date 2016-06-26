@@ -1,5 +1,6 @@
 package pers.traveler.robot;
 
+import io.appium.java_client.ios.IOSDriver;
 import pers.quq.filedb.core.FileFilterImpl;
 import pers.quq.filedb.core.Filter;
 import pers.traveler.constant.PlatformName;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by quqing on 16/5/11.
@@ -37,7 +39,8 @@ public class IOSRobot extends Robot {
 
         try {
             path = "output" + File.separator + date + File.separator + time + File.separator + deviceID + File.separator + "logs" + File.separator;
-            exceptionInfo = filter.grep(path + "app.log", pers.traveler.constant.Filter.ERROR);
+            exceptionInfo = filter.grep(path + "app.log", pers.traveler.constant.Filter.Error);
+            exceptionInfo = exceptionInfo + System.getProperty("line.separator") + filter.grep(path + "app.log", pers.traveler.constant.Filter.error);
             FileUtil.writeAll(path + "app_err.log", exceptionInfo);
         } catch (IOException e) {
             e.printStackTrace();
@@ -57,17 +60,22 @@ public class IOSRobot extends Robot {
 
             engine = EngineFactory.build(PlatformName.iOS, driver, config);
 
-            logManager.run(config);
+            if (((IOSDriver) driver).isAppInstalled(getRemoveApp()))
+                logManager.run(config);
 
             if (null != guideFlow && guideFlow.size() > 0)
                 homePageSource = engine.guideRuleProcessing(guideFlow, config.getInterval());
 
-            taskStack = engine.getTaskStack(Type.XML, homePageSource, 1);
+            if (runMode == 1) {
+                taskStack = engine.getTaskStack(Type.XML, homePageSource, 1);
 
-            Log.logInfo("########################### 开始执行探索性遍历测试 ###########################");
-            engine.dfsSearch(taskStack, config.getDepth());
+                Log.logInfo("########################### 开始执行探索性遍历测试 ###########################");
+                engine.dfsSearch(taskStack, config.getDepth());
+            }
 
+            TimeUnit.SECONDS.sleep(20);
             afterTravel();
+
         } catch (ClassNotFoundException e) {
             Log.logError(e.fillInStackTrace());
         } catch (NoSuchMethodException e) {
@@ -78,6 +86,8 @@ public class IOSRobot extends Robot {
             Log.logError(e.fillInStackTrace());
         } catch (InstantiationException e) {
             Log.logError(e.fillInStackTrace());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

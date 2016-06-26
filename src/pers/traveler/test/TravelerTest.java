@@ -13,8 +13,8 @@ public class TravelerTest {
     public static void main(String[] args) throws InterruptedException {
         Robot testRobot;
         try {
-            testRobot = RobotFactory.build(PlatformName.Android, "/Users/mac/Documents/intelliJ-idea/AutoTraveler/confige/android.xml");
-//            testRobot = RobotFactory.build(PlatformName.iOS, "/Users/mac/Documents/intelliJ-idea/AutoTraveler/confige/ios.xml");
+            testRobot = RobotFactory.build(PlatformName.Android, "/Users/mac/Documents/intelliJ-idea/AutoTraveler/config/android.xml");
+//            testRobot = RobotFactory.build(PlatformName.iOS, "/Users/mac/Documents/intelliJ-idea/AutoTraveler/config/ios.xml");
             testRobot.travel();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <!--点击类型设置-->
+    <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIATabBar[1]/UIAButton[2]</step>
+    <step>wait>>5</step>
+    <step>tap>>x:0.5,y:0.178,finger:1,touchCount:1,duration:0</step>
+</module>

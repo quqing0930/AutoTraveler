@@ -16,7 +16,10 @@ public class FileUtil {
     public static String readAll(String fileName)
             throws IOException {
         java.io.InputStream ins = new java.io.FileInputStream(fileName);
+        // 根据ins中的字节长度 创建一个byte数组保存读出的数据
         byte[] contentByte = new byte[ins.available()];
+        // 对contentByte数组赋值
+        // 读入就是把文件中的东西读出后读入到另一个东西里去
         ins.read(contentByte);
         String s = new String(contentByte);
         ins.close();

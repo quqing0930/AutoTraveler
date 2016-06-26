@@ -8,12 +8,14 @@
         <language>zh-Hans</language>
     </capability>
     <iosCapability>
-        <app>/Users/mac/Desktop/apk/xxxxxx.app</app>
-        <udid>xxxxxxxx</udid>
-        <bundleId>com.xxx.xxxxxx</bundleId>
+        <app>/Users/mac/Desktop/apk/xxx.app</app>
+        <!--<udid>d32975a39224bc409796bcdc75956cd6530edbdb</udid>-->
+        <udid>xxxxxxxxxxxxx</udid>
+        <bundleId>com.xxx.xxx</bundleId>
         <platformName>iOS</platformName>
-        <platformVersion>8.2</platformVersion>
+        <platformVersion>8.4</platformVersion>
         <deviceName>iPhone 5</deviceName>
+        <!--<deviceName>iPhone Simulator</deviceName>-->
         <autoAcceptAlerts>true</autoAcceptAlerts>
     </iosCapability>
     <!--引导流 关键字驱动,引导至所需模块再开始遍历-->
@@ -22,13 +24,15 @@
         <step>slide>>2</step>
         <!--点击类型设置-->
         <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIAButton[1]</step>
-        <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAButton[2]</step>
-        <!--输入类型设置-->
+        <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAButton[3]</step>
         <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIAButton[2]</step>
-        <step>input>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATextField[1]|13012345678</step>
-        <step>input>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIASecureTextField[1]|123456</step>
+        <step>input>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATextField[1]|15618971003</step>
+        <step>input>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIASecureTextField[1]|qwer2015</step>
         <step>click>>xpath:://UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIAButton[1]</step>
+        <!--<step>input>>xpath:://UIAApplication[1]/UIAWindow[3]/UIATextField[1]|8888</step>-->
+        <!--<step>click>>xpath:://UIAApplication[1]/UIAWindow[3]/UIAButton[2]</step>-->
         <!--手势密码设置-->
+        <step>gesture>>xpath:://UIAButton[@name='blue circle']</step>
         <step>gesture>>xpath:://UIAButton[@name='blue circle']</step>
     </iosGuideFlow>
     <rule>
@@ -36,8 +40,8 @@
         <identify-default>5</identify-default>
         <!--Tab窗口用selected区别,可能要多选几个节点到达-->
         <identify-special>
-            <define>专题,xx,xx,xx>>16</define>
-            <define>xx,xx,保险,xx,xx>>13</define>
+            <define>专题,选股>>16</define>
+            <define>投资,贷款,>>13</define>
         </identify-special>
         <!--窗口执行顺序 1:从上到下(默认) 2:从下到上-->
         <reverse>1</reverse>
@@ -47,6 +51,7 @@
             <class>UIAButton</class>
             <class>UIASwitch</class>
             <class>UIATableCell</class>
+            <!--<class>UIAStaticText</class>-->
             <class>UIAPickerWheel</class>
             <class>UIACollectionCell</class>
         </click>
@@ -57,31 +62,35 @@
         </input>
         <!--返回键-->
         <back>
-            <location>//UIAApplication[1]/UIAWindow[2]/UIAButton[1]</location>
+            <location>//UIAApplication[1]/UIAWindow[4]/UIAButton[1]</location>
             <location>//UIAApplication[1]/UIAWindow[1]/UIANavigationBar[1]/UIAButton[2]</location>
+            <location>//UIAApplication[1]/UIAWindow[3]/UIAButton[1]</location>
+            <location>//UIAApplication[1]/UIAWindow[4]/UIAButton[2]</location>
+            <location>//UIAApplication[1]/UIAWindow[2]/UIAToolbar[1]/UIAButton[3]</location>
+            <location>//UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIAWebView[1]/UIAImage[1]</location>
+            <location>//UIAApplication[1]/UIAWindow[1]/UIAButton[2]</location>
+            <location>//UIAApplication[1]/UIAWindow[1]/UIAButton[1]</location>
+            <location>//UIAApplication[1]/UIAWindow[3]/UIAButton[1]</location>
+            <location>//UIAApplication[1]/UIAWindow[3]/UIAButton[2]</location>
         </back>
         <!--无需返回的列表,需配置识别窗口唯一性的内容-->
         <notback>
-            <item>首页,xxx,xxx,xxx,aa,bb</item>
+            <item>首页</item>
         </notback>
         <!--黑名单 支持text,name,resourceId-->
         <blackList>
+            <item>//UIAApplication[1]/UIAWindow[1]/UIATabBar[1]/UIAButton[1]</item>
             <item>相机</item>
-            <item>相册</item>
-            <item>照片</item>
-            <item>shift</item>
-            <item>退出登录</item>
+            <item>如您已完成添加，请重新登录</item>
             <item>重新登录</item>
             <item>//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAButton[1]</item>
-            <item>//UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATableView[1]/UIATableCell[1]/UIAButton[1]</item>
+            <item>//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIAButton[1]</item>
         </blackList>
         <!--触发器 条件>>动作 支持返回,点击,手势密码解锁,延时等待-->
         <trigger>
-            <item>选择银行>>back</item>
-            <item>选择公司>>back</item>
-            <item>检测到新版本>>back</item>
-            <item>确定|取消>>//UIAApplication[1]/UIAWindow[1]/UIAButton[2]</item>
-            <item>更多解锁方式>>gesture->//UIAButton[@name='xxx xxx']</item>
+            <item>温馨提示|确定|取消>>//UIAApplication[1]/UIAWindow[4]/UIAButton[1]</item>
+            <item>提示|确定|取消>>//UIAApplication[1]/UIAWindow[4]/UIAButton[1]</item>
+            <item>更多解锁方式>>gesture->//UIAButton[@name='blue circle']</item>
         </trigger>
         <!--1:clazz+name+label+value+path 2:clazz+name+label+value+path 3:taskID-->
         <filter>1</filter>
@@ -89,7 +98,7 @@
         <allowSameWinTimes>10</allowSameWinTimes>
     </rule>
     <log>
-        <ios>idevicesyslog -d -u #udid#|grep xxxxxx</ios>
+        <ios>idevicesyslog -d -u #udid#|grep xxx</ios>
     </log>
     <global>
         <!--Appium port-->
@@ -98,14 +107,18 @@
         <host>127.0.0.1</host>
         <!--测试类型 1.android 2.ios 3.web-->
         <mode>2</mode>
+        <!--运行模式 1.遍历模式 2.业务场景模式-->
+        <runMode>1</runMode>
         <!--遍历深度-->
         <depth>3</depth>
         <!--截图和视频的目录-->
         <screenshot>/Users/mac/Desktop/png</screenshot>
+        <!--启动appium-->
+        <runServer>/Applications/Appium.app/Contents/Resources/node/bin/node /Applications/Appium.app/Contents/Resources/node_modules/appium/bin/appium.js -p #port# -bp 5760 --session-override --command-timeout 7200 --udid #udid#</runServer>
         <!--遍历时间 分-->
         <duration>0</duration>
         <!--延时等待 秒-->
-        <interval>1</interval>
+        <interval>3</interval>
         <!--超时 秒-->
         <timeout>60</timeout>
     </global>

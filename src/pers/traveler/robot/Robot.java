@@ -3,7 +3,6 @@ package pers.traveler.robot;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
-import org.jim2mov.core.MovieSaveException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import pers.traveler.constant.CmdConfig;
@@ -15,6 +14,7 @@ import pers.traveler.log.Log;
 import pers.traveler.log.LogManager;
 import pers.traveler.parser.ConfigProvider;
 import pers.traveler.review.PicToAvi;
+import pers.traveler.review.core.MovieSaveException;
 import pers.traveler.tools.CmdUtil;
 import pers.traveler.tools.DateUtil;
 
@@ -24,12 +24,14 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Create by quqing on 16/5/8.
  */
 public abstract class Robot {
+    protected byte runMode;
     protected String date;
     protected String time;
     protected String deviceID;
@@ -66,13 +68,15 @@ public abstract class Robot {
     protected String beforeTravel() {
         byte mode;
         int port;
+        String cmd;
         long timeout = 0;
         String host;
         Map<String, String> capabilityMap;
 
         date = device.getDate();
         time = device.getTime();
-        deviceID = config.getUdid();
+        runMode = config.getRunMode();
+        deviceID = null == config.getUdid() ? UUID.randomUUID().toString() : config.getUdid();
 
         try {
             Log.logInfo("date = " + date);
@@ -84,7 +88,21 @@ public abstract class Robot {
             mode = config.getMode();
             port = config.getPort();
             host = config.getHost();
+            cmd = config.getRunServer();
             timeout = config.getTimeout();
+
+            if (null != cmd && !cmd.isEmpty()) {
+                cmd = cmd.replaceAll("#port#", Integer.toString(port)).replaceAll("#udid#", config.getUdid());
+                StartAppiumServer startAppiumServer = new StartAppiumServer(cmd);
+                startAppiumServer.start();
+
+                try {
+                    TimeUnit.SECONDS.sleep(30);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
             capabilityMap = config.getCapabilityMap();
 
             Log.logInfo("########################### DesiredCapabilities ###########################");
@@ -150,15 +168,10 @@ public abstract class Robot {
      * 遍历外调方法
      */
     public void travel() {
-        int fps = 1;
-        int mWidth = 1440;
-        int mHeight = 860;
-        String pngDir = config.getScreenshot();
-        String aviFileName = pngDir + File.separator + "review.avi";
-
         try {
             Log.logInfo("############################ Config parameters ############################");
             Log.logInfo("mode=" + config.getMode());
+            Log.logInfo("runMode=" + runMode);
             Log.logInfo("depth=" + config.getDepth());
             Log.logInfo("port=" + config.getPort());
             Log.logInfo("reverse=" + config.getReverse());
@@ -191,21 +204,6 @@ public abstract class Robot {
             Log.logInfo("########################### 探索性遍历测试执行完毕 ###########################");
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } finally {
-            Log.logInfo("开始创建视频......");
-            try {
-                PicToAvi.convertPicToAvi(pngDir, aviFileName, fps, mWidth, mHeight);
-            } catch (MovieSaveException e) {
-                Log.logError(e.fillInStackTrace());
-            } catch (IllegalArgumentException e) {
-                Log.logError(e.fillInStackTrace());
-            } catch (NullPointerException e) {
-                Log.logError(e.fillInStackTrace());
-            } catch (Exception e) {
-                Log.logError(e.fillInStackTrace());
-            } finally {
-                Log.logInfo("创建视频完毕!");
-            }
         }
     }
 
@@ -217,6 +215,12 @@ public abstract class Robot {
      * 测试套件执行后关闭driver。
      */
     public void afterTravel() {
+        int fps = 1;
+        int mWidth = 1440;
+        int mHeight = 860;
+        String suffix = "png";
+        String pngDir = config.getScreenshot();
+        String aviFileName = pngDir + File.separator + "review.avi";
         String removeApp = getRemoveApp();
 
         try {
@@ -230,12 +234,26 @@ public abstract class Robot {
             }
             driver.quit();
 
-            Log.logInfo("开始统计异常信息...");
-            catchAppException();
-            Log.logInfo("统计异常信息完毕!");
-
         } catch (InterruptedException e) {
             Log.logError(e.fillInStackTrace());
+        } finally {
+            try {
+                Log.logInfo("开始统计异常信息...");
+                catchAppException();
+                Log.logInfo("统计异常信息完毕!");
+
+                TimeUnit.SECONDS.sleep(10);
+                Log.logInfo("开始创建视频......");
+                PicToAvi.convertPicToAvi(pngDir, suffix, aviFileName, fps, mWidth, mHeight);
+                Log.logInfo("创建视频完毕!");
+                CmdUtil.run(CmdConfig.KILL_APP_PROCESS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (MovieSaveException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

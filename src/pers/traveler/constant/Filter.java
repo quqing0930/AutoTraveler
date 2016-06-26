@@ -5,6 +5,7 @@ package pers.traveler.constant;
  */
 public interface Filter {
     String CRASH = "crash";
-    String ERROR = "Error";
+    String Error = "Error";
+    String error = "error";
     String SYSTEM_ERR = "System.err";
 }

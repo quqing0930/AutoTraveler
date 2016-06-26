@@ -8,6 +8,7 @@ import java.util.Map;
  */
 public class Config {
     private byte mode;
+    private byte runMode;
     private byte reverse;
     private byte depth;
     private byte filter;
@@ -21,6 +22,7 @@ public class Config {
     private String app;
     private String udid;
     private String tips;
+    private String runServer;
     private String bundleId;
     private String logCmd;
     private String screenshot;
@@ -249,5 +251,21 @@ public class Config {
 
     public void setAllowSameWinTimes(byte allowSameWinTimes) {
         this.allowSameWinTimes = allowSameWinTimes;
+    }
+
+    public String getRunServer() {
+        return runServer;
+    }
+
+    public void setRunServer(String runServer) {
+        this.runServer = runServer;
+    }
+
+    public byte getRunMode() {
+        return runMode;
+    }
+
+    public void setRunMode(byte runMode) {
+        this.runMode = runMode;
     }
 }

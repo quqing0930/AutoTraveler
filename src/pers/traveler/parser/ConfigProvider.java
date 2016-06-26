@@ -31,13 +31,36 @@ public class ConfigProvider {
         return MD5Generator.getMD5ByString(string);
     }
 
+    public List<String> getModule(String fileName) {
+        Node node;
+        List<String> moduleFlow;
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document document = db.parse(fileName);
+
+            node = document.getElementsByTagName("module").item(0);
+            moduleFlow = getList(node);
+
+            return moduleFlow;
+
+        } catch (ParserConfigurationException e) {
+            Log.logError(e.fillInStackTrace());
+        } catch (SAXException e) {
+            Log.logError(e.fillInStackTrace());
+        } catch (IOException e) {
+            Log.logError(e.fillInStackTrace());
+        }
+        return null;
+    }
+
     public Config getConfig(String fileName) {
-        byte mode = 1, depth = 0, identifyDefault = 8, filter = 3, reverse = 1, allowSameWinTimes = 15;
+        byte mode = 1, runMode = 1, depth = 0, identifyDefault = 8, filter = 3, reverse = 1, allowSameWinTimes = 15;
         int port = 4730;
         long timeout = 30, duration = 0, interval = 0;
         String host = "127.0.0.1";
-        String sMode, sDepth, sPort, sDuration, sInterval, sTimeout, sIdentifyDefault, sFilter, sReverse, sAllowSameWinTimes;
-        String app = null, udid = null, tips = null, appPackage = null, capabilityType = null, logCmd = null, bundleId = null;
+        String sMode, sRunMode, sDepth, sPort, sDuration, sInterval, sTimeout, sIdentifyDefault, sFilter, sReverse, sAllowSameWinTimes;
+        String app = null, udid = null, tips = null, appPackage = null, capabilityType = null, logCmd = null, bundleId = null, runServer = null;
         String screenshot = "screenshot" + File.separator + DateUtil.formatTime() + File.separator;
         List<String> backList = null;
         List<String> identifySpecialList, clickList, inputList, triggerList, blackList, guideFlow, notBackList;
@@ -67,6 +90,12 @@ public class ConfigProvider {
                 sMode = document.getElementsByTagName("mode").item(0).getTextContent();
                 if (null != sMode && !sMode.isEmpty())
                     mode = Byte.parseByte(sMode.trim());
+            }
+
+            if (null != document.getElementsByTagName("runMode").item(0)) {
+                sRunMode = document.getElementsByTagName("runMode").item(0).getTextContent();
+                if (null != sRunMode && !sRunMode.isEmpty())
+                    runMode = Byte.parseByte(sRunMode.trim());
             }
 
             if (null != document.getElementsByTagName("reverse").item(0)) {
@@ -123,6 +152,10 @@ public class ConfigProvider {
                 screenshot = document.getElementsByTagName("screenshot").item(0).getTextContent() + File.separator + DateUtil.formatTime() + File.separator;
             }
 
+            if (null != document.getElementsByTagName("runServer").item(0)) {
+                runServer = document.getElementsByTagName("runServer").item(0).getTextContent();
+            }
+
             node = document.getElementsByTagName("capability").item(0);
             if (null != node) {
                 nodeList = node.getChildNodes();
@@ -175,8 +208,8 @@ public class ConfigProvider {
                 udid = capabilityMap.get("udid");
                 if (null == app)
                     throw new XmlParseException("the tag of <app> can't be empty");
-                if (null == udid)
-                    throw new XmlParseException("the tag of <udid> can't be empty");
+//                if (null == udid)
+//                    throw new XmlParseException("the tag of <udid> can't be empty");
                 if (mode == PlatformName.ANDROID) {
                     appPackage = capabilityMap.get("appPackage");
                     if (null == appPackage)
@@ -185,8 +218,8 @@ public class ConfigProvider {
 
                 if (mode == PlatformName.IOS) {
                     bundleId = capabilityMap.get("bundleId");
-                    if (null == bundleId)
-                        throw new XmlParseException("the tag of <bundleId> can't be empty");
+//                    if (null == bundleId)
+//                        throw new XmlParseException("the tag of <bundleId> can't be empty");
                 }
             }
 
@@ -226,9 +259,11 @@ public class ConfigProvider {
 
             config.setScreenshot(screenshot);
             config.setMode(mode);
+            config.setRunMode(runMode);
             config.setReverse(reverse);
             config.setDepth(depth);
             config.setFilter(filter);
+            config.setRunServer(runServer);
             config.setPort(port);
             config.setDuration(duration);
             config.setInterval(interval);

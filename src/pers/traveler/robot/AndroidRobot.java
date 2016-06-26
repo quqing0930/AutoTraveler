@@ -1,5 +1,6 @@
 package pers.traveler.robot;
 
+import io.appium.java_client.android.AndroidDriver;
 import pers.quq.filedb.core.FileFilterImpl;
 import pers.quq.filedb.core.Filter;
 import pers.traveler.constant.PlatformName;
@@ -75,15 +76,18 @@ public class AndroidRobot extends Robot {
 
             engine = EngineFactory.build(PlatformName.Android, driver, config);
 
-            logManager.run(config);
+            if (((AndroidDriver) driver).isAppInstalled(getRemoveApp()))
+                logManager.run(config);
 
             if (null != guideFlow && guideFlow.size() > 0)
                 homePageSource = engine.guideRuleProcessing(guideFlow, config.getInterval());
 
-            taskStack = engine.getTaskStack(Type.XML, homePageSource, 1);
+            if (runMode == 1) {
+                taskStack = engine.getTaskStack(Type.XML, homePageSource, 1);
 
-            Log.logInfo("########################### 开始执行探索性遍历测试 ###########################");
-            engine.dfsSearch(taskStack, config.getDepth());
+                Log.logInfo("########################### 开始执行探索性遍历测试 ###########################");
+                engine.dfsSearch(taskStack, config.getDepth());
+            }
 
             afterTravel();
         } catch (ClassNotFoundException e) {

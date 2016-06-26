@@ -81,4 +81,7 @@ public interface CmdConfig {
 
     // windows time
     String WIN_TIME = "echo %TIME:~0,2%%TIME:~3,2%%TIME:~6,2%";
+
+    // kill appium server
+    String KILL_APPIUM_SERVER = "ps -A|grep node|grep -v grep|awk 'NR=1 {print $1}'|xargs kill -9";
 }

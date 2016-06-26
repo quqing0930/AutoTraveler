@@ -9,43 +9,40 @@
     </capability>
     <androidCapability>
         <app>/Users/mac/Desktop/apk/xxx.apk</app>
-        <udid>xxxxxxxxxxxx</udid>
+        <udid>xxxxxxxxxxxxx</udid>
         <platformName>Android</platformName>
         <platformVersion>4.3</platformVersion>
         <deviceName>Mi4</deviceName>
-        <appPackage>xxx.xxx.xxx</appPackage>
-        <appActivity>xxx.xxx.xxx.ActivityPro</appActivity>
+        <appPackage>com.xxx.xxx</appPackage>
+        <appActivity>com.xxx.xxx.SplashActivityPro</appActivity>
         <unicodeKeyboard>true</unicodeKeyboard>
         <resetKeyboard>true</resetKeyboard>
         <noSign>true</noSign>
     </androidCapability>
     <!--引导流 关键字驱动,引导至所需模块再开始遍历-->
     <androidGuideFlow>
+        <step>tips>>禁止|允许>>//android.widget.Button[@resource-id='com.huawei.systemmanager:id/btn_allow']</step>
         <!--滑动类型设置-->
         <step>slide>>2</step>
         <!--点击类型设置-->
         <step>click>>id::com.xxx.xxx:id/btnnext</step>
-        <step>click>>id::com.xxx.xxx:id/rightBtn</step>
         <step>click>>id::com.xxx.xxx:id/text_home_head_login</step>
         <!--输入类型设置-->
         <step>click>>id::com.xxx.xxx:id/otp_tv_login_with_username</step>
         <step>input>>id::com.xxx.xxx:id/tv_loginAccount|13012345678</step>
-        <step>input>>id::com.xxx.xxx:id/loginPassword|123456</step>
+        <step>input>>id::com.xxx.xxx:id/loginPassword|123</step>
         <step>click>>id::com.xxx.xxx:id/tv_login</step>
-        <step>input>>id::com.xxx.xxx:id/et_input|8888</step>
-        <step>click>>id::com.xxx.xxx:id/tv_ok</step>
-        <step>
-            <!--手势密码-->
-            gesture>>xpath:://android.widget.FrameLayout[@resource-id='xxx.xxx.xxx:id/gesture_container']//android.view.View[1]//android.widget.ImageView
-        </step>
+        <!--手势密码-->
+        <step>gesture>>xpath:://android.widget.FrameLayout[@resource-id='com.xxx.xxx:id/gesture_container']//android.view.View[1]//android.widget.ImageView</step>
+        <step>gesture>>xpath:://android.widget.FrameLayout[@resource-id='com.xxx.xxx:id/gesture_container']//android.view.View[1]//android.widget.ImageView</step>
     </androidGuideFlow>
     <rule>
         <!--窗口鉴定策略,默认取前8个节点生成md5-->
         <identify-default>8</identify-default>
         <!--Tab窗口用selected区别,可能要多选几个节点到达-->
         <identify-special>
-            <define>专题,xx,xx,xx>>24</define>
-            <define>xx,xx,保险,xx,xx>>30</define>
+            <define>专题,直播,要闻,选股>>24</define>
+            <define>简单理财,投资,保险,贷款,信用卡>>30</define>
         </identify-special>
         <!--窗口执行顺序 1:从上到下(默认) 2:从下到上-->
         <reverse>1</reverse>
@@ -71,20 +68,22 @@
             <class>UIASecureTextField</class>
             <class>android.widget.EditText</class>
         </input>
-        <!--启动界面提示框,包含的关键字及操作的控件,针对Android-->
+        <!--启动界面提示框,包含的关键字及操作的控件-->
         <tips>禁止|允许>>//android.widget.Button[@resource-id='com.huawei.systemmanager:id/btn_allow']</tips>
         <!--无需返回的列表,需配置识别窗口唯一性的内容-->
         <notback>
-            <item>首页,aaa,财经快讯,bbb</item>
+            <item>首页</item>
+            <item>财经快讯,我,我的订单,活期,定期</item>
         </notback>
         <!--黑名单 支持text,name,resourceId的过滤-->
         <blackList>
             <item>相机</item>
             <item>退出登录</item>
+            <item>如您已完成添加，请重新登录</item>
             <item>重新登录</item>
-            <item>//UIAApplication[1]/UIAWindow[1]/UIAPicker[1]/UIAPickerWheel[1]</item>
+            <item>//UIAApplication[1]/UIAWindow[4]/UIAPicker[1]/UIAPickerWheel[1]</item>
             <item>
-                //UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIACollectionView[1]/UIACollectionCell[3]
+                //UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIACollectionView[1]/UIACollectionCell[5]
             </item>
         </blackList>
         <!--触发器 条件>>动作 支持返回,点击,手势密码解锁,延时等待-->
@@ -93,9 +92,16 @@
             <item>相册>>back</item>
             <item>扫描框>>back</item>
             <item>分享到>>back</item>
+            <item>我的权益>>delay->3</item>
+            <item>选择银行>>back</item>
+            <item>选择保险公司>>back</item>
             <item>检测到新版本>>back</item>
-            <item>xx|全部>>back</item>
-            <item>保险|xx>>back</item>
+            <item>添加产品|保存>>back</item>
+            <item>消息|全部>>back</item>
+            <item>
+                closeButton>>//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ImageButton
+            </item>
+            <item>安全验证|立即验证|以后再说>>//android.widget.Button[@resource-id='xxx.xxx.xxx:id/rightBtn']</item>
             <item>
                 更多解锁方式>>gesture->//android.widget.FrameLayout[@resource-id='com.xxx.xxx:id/gesture_container']//android.view.View[1]//android.widget.ImageView
             </item>
@@ -107,7 +113,7 @@
     </rule>
     <!--app日志-->
     <log>
-        <android>adb -s #udid# logcat -b main -b system -b events -b radio *:D | grep pingan</android>
+        <android>adb -s #udid# logcat -b main -b system -b events -b radio *:D | grep xxx</android>
     </log>
     <global>
         <!--Appium port-->
@@ -116,12 +122,16 @@
         <host>127.0.0.1</host>
         <!--测试类型 1.android 2.ios 3.web-->
         <mode>1</mode>
+        <!--运行模式 1.遍历模式 2.业务场景模式-->
+        <runMode>1</runMode>
         <!--遍历深度-->
         <depth>3</depth>
         <!--截图和视频的目录-->
         <screenshot>/Users/mac/Desktop/png</screenshot>
+        <!--启动appium-->
+        <runServer>/Applications/Appium.app/Contents/Resources/node/bin/node /Applications/Appium.app/Contents/Resources/node_modules/appium/bin/appium.js -p #port# -bp 5760 --session-override --command-timeout 7200 --udid #udid#</runServer>
         <!--遍历时间 分-->
-        <duration>3</duration>
+        <duration>0</duration>
         <!--延时等待 秒-->
         <interval>3</interval>
         <!--超时 秒-->
